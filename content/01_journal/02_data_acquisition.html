@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.269">
-
+<meta name="generator" content="quarto-1.3.336">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
-<meta name="author" content="Joschka Schwarz">
-
+<meta name="author" content="Sherliana Setiawan">
 <title>MyLabJournal - Data Acquisition</title>
 <style>
 code{white-space: pre-wrap;}
@@ -18,11 +15,44 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
-
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
@@ -42,8 +72,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<script id="quarto-search-options" type="application/json">{
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -61,83 +90,79 @@ ul.task-list li input[type="checkbox"] {
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit"
   }
-}</script>
-
-
+}</script><link href="../../site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+<script src="../../site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 </head>
-
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg navbar-dark "><div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">MyLabJournal</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
-  <li class="nav-item">
-    <a class="nav-link" href="../../index.html">
+<li class="nav-item">
+    <a class="nav-link" href="../../index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-journal" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-journal" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
  <span class="menu-text">Journal</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-journal">    
-        <li>
-    <a class="dropdown-item" href="../../content/01_journal/01_tidyverse.html">
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-journal">
+<li>
+    <a class="dropdown-item" href="../../content/01_journal/01_tidyverse.html" rel="" target="">
  <span class="dropdown-text">01 Tidyverse</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../content/01_journal/02_data_acquisition.html">
+    <a class="dropdown-item" href="../../content/01_journal/02_data_acquisition.html" rel="" target="">
  <span class="dropdown-text">02 Data Acquisition</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../content/01_journal/03_data_wrangling.html">
+    <a class="dropdown-item" href="../../content/01_journal/03_data_wrangling.html" rel="" target="">
  <span class="dropdown-text">03 Data Wrangling</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../content/01_journal/04_data_visualization.html">
+    <a class="dropdown-item" href="../../content/01_journal/04_data_visualization.html" rel="" target="">
  <span class="dropdown-text">04 Data Visualization</span></a>
   </li>  
     </ul>
-  </li>
+</li>
   <li class="nav-item">
-    <a class="nav-link" href="../../content/02_notes/05_class_notes.html">
+    <a class="nav-link" href="../../content/02_notes/05_class_notes.html" rel="" target="">
  <span class="menu-text">Class notes</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../content/03_other/06_links.html">
+    <a class="nav-link" href="../../content/03_other/06_links.html" rel="" target="">
  <span class="menu-text">Links</span></a>
   </li>  
 </ul>
-              <div class="quarto-toggle-container">
-                  <a href="" class="quarto-color-scheme-toggle nav-link" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
-              </div>
-              <div id="quarto-search" class="" title="Search"></div>
+<div class="quarto-navbar-tools ms-auto">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
-    </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+    </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Contents</h2>
+   
+  <ul class="collapse">
+<li><a href="#data-acquisition" id="toc-data-acquisition" class="nav-link active" data-scroll-target="#data-acquisition"><span class="header-section-number">0.1</span> # DATA ACQUISITION</a></li>
+  <li><a href="#challenge-1-api" id="toc-challenge-1-api" class="nav-link" data-scroll-target="#challenge-1-api"><span class="header-section-number">1</span> CHALLENGE 1: API</a></li>
+  <li><a href="#challenge-2-web-scrapping-rosebikes.de" id="toc-challenge-2-web-scrapping-rosebikes.de" class="nav-link" data-scroll-target="#challenge-2-web-scrapping-rosebikes.de"><span class="header-section-number">2</span> CHALLENGE 2: WEB SCRAPPING ROSEBIKES.DE</a></li>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">Data Acquisition</h1>
 </div>
 
@@ -148,7 +173,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Joschka Schwarz </p>
+             <p>Sherliana Setiawan </p>
           </div>
   </div>
     
@@ -157,26 +182,128 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
-</header>
+</header><section id="data-acquisition" class="level2" data-number="0.1"><h2 data-number="0.1" class="anchored" data-anchor-id="data-acquisition">
+<span class="header-section-number">0.1</span> # DATA ACQUISITION</h2>
+</section><section id="challenge-1-api" class="level1" data-number="1"><h1 data-number="1">
+<span class="header-section-number">1</span> CHALLENGE 1: API</h1>
+<div class="cell" data-hash="02_data_acquisition_cache/html/unnamed-chunk-1_e95d166e9218eb0e02b6df69d3461cf3">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># load libraries </span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">install.packages</span>(<span class="st">"devtools"</span>, <span class="at">repos =</span> <span class="st">"http://cran.rstudio.com/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Installing package into 'C:/Users/USER/AppData/Local/R/win-library/4.3'
+#&gt; (as 'lib' is unspecified)</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#&gt; package 'devtools' successfully unpacked and MD5 sums checked
+#&gt; 
+#&gt; The downloaded binary packages are in
+#&gt;  C:\Users\USER\AppData\Local\Temp\Rtmpywc05u\downloaded_packages</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"zumbov2/deeplr"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>#&gt; Skipping install of 'deeplr' from a github remote, the SHA1 (b9206467) has not changed since last install.
+#&gt;   Use `force = TRUE` to force installation</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>my_auth_key <span class="ot">=</span> <span class="st">"05bc2a53-360f-1d6a-540f-2b880ad44d62:fx"</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>text_to_be_translated <span class="ot">=</span> <span class="st">"La seule facon de savoir ce qui se passe est de perturber le systeme."</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a>translated_text <span class="ot">&lt;-</span> deeplr<span class="sc">::</span><span class="fu">translate2</span>(</span>
+<span id="cb6-5"><a href="#cb6-5"></a>  <span class="at">text =</span> text_to_be_translated,</span>
+<span id="cb6-6"><a href="#cb6-6"></a>  <span class="at">target_lang =</span> <span class="st">"EN"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7"></a>  <span class="at">auth_key =</span> my_auth_key</span>
+<span id="cb6-8"><a href="#cb6-8"></a>)</span>
+<span id="cb6-9"><a href="#cb6-9"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(text_to_be_translated, <span class="at">caption =</span> <span class="st">'text to be translated'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>text to be translated</caption>
+<thead><tr class="header">
+<th style="text-align: left;">x</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td style="text-align: left;">La seule facon de savoir ce qui se passe est de perturber le systeme.</td>
+</tr></tbody>
+</table>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(translated_text, <span class="at">caption =</span> <span class="st">'translated.text'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>translated.text</caption>
+<thead><tr class="header">
+<th style="text-align: left;">x</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td style="text-align: left;">The only way to find out what is going on is to disrupt the system.</td>
+</tr></tbody>
+</table>
+</div>
+</div>
+<hr></section><section id="challenge-2-web-scrapping-rosebikes.de" class="level1" data-number="2"><h1 data-number="2">
+<span class="header-section-number">2</span> CHALLENGE 2: WEB SCRAPPING ROSEBIKES.DE</h1>
+<div class="cell" data-hash="02_data_acquisition_cache/html/unnamed-chunk-2_370f3c0b11aeb6926d4de54d08d1bf50">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Load libraries</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">library</span>(rvest)    <span class="co"># For web scraping</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="fu">library</span>(stringr)  <span class="co"># For string manipulation</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="fu">library</span>(dplyr)    <span class="co"># For data manipulation</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="co"># Read the HTML content of the webpage</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a>url <span class="ot">=</span> <span class="st">"https://www.rosebikes.de/"</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>rosebikes <span class="ot">=</span> <span class="fu">read_html</span>(url)</span>
+<span id="cb8-9"><a href="#cb8-9"></a></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co"># Extract product names from the HTML using CSS selector (selector gadget) ".products-slider-tile__product-name"</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a>product_name <span class="ot">=</span> rosebikes <span class="sc">%&gt;%</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a>  <span class="fu">html_nodes</span>(<span class="st">".products-slider-tile__product-name"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a>  <span class="fu">html_text</span>()</span>
+<span id="cb8-14"><a href="#cb8-14"></a></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="co"># Extract product costs from the HTML using CSS selector ".product-tile-price__current-value",</span></span>
+<span id="cb8-16"><a href="#cb8-16"></a><span class="co"># remove non-numeric characters, such as currency symbols and spaces</span></span>
+<span id="cb8-17"><a href="#cb8-17"></a>product_cost <span class="ot">=</span> rosebikes <span class="sc">%&gt;%</span></span>
+<span id="cb8-18"><a href="#cb8-18"></a>  <span class="fu">html_nodes</span>(<span class="st">".product-tile-price__current-value "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-19"><a href="#cb8-19"></a>  <span class="fu">html_text</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb8-20"><a href="#cb8-20"></a>  <span class="fu">str_replace_all</span>(<span class="st">"[^0-9.,]+"</span>, <span class="st">""</span>)</span>
+<span id="cb8-21"><a href="#cb8-21"></a></span>
+<span id="cb8-22"><a href="#cb8-22"></a><span class="co"># Remove any remaining non-numeric characters, such as additional symbols or text</span></span>
+<span id="cb8-23"><a href="#cb8-23"></a>product_cost <span class="ot">=</span> <span class="fu">sub</span>(<span class="st">"[^0-9.,]"</span>, <span class="st">""</span>, product_cost)</span>
+<span id="cb8-24"><a href="#cb8-24"></a></span>
+<span id="cb8-25"><a href="#cb8-25"></a><span class="co"># Replace commas with dots to convert the prices into a numeric format</span></span>
+<span id="cb8-26"><a href="#cb8-26"></a>product_cost <span class="ot">=</span> <span class="fu">sub</span>(<span class="st">","</span>, <span class="st">"."</span>, product_cost)</span>
+<span id="cb8-27"><a href="#cb8-27"></a></span>
+<span id="cb8-28"><a href="#cb8-28"></a><span class="co"># Remove the first dot if it represents a thousand separator</span></span>
+<span id="cb8-29"><a href="#cb8-29"></a>product_cost <span class="ot">=</span> <span class="fu">sub</span>(<span class="st">"(?&lt;=</span><span class="sc">\\</span><span class="st">d)</span><span class="sc">\\</span><span class="st">.(?=</span><span class="sc">\\</span><span class="st">d{3})"</span>, <span class="st">""</span>, product_cost, <span class="at">perl =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-30"><a href="#cb8-30"></a></span>
+<span id="cb8-31"><a href="#cb8-31"></a><span class="co"># Remove trailing ".00" from the prices</span></span>
+<span id="cb8-32"><a href="#cb8-32"></a>product_cost <span class="ot">=</span> <span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">.00$"</span>, <span class="st">""</span>, product_cost)</span>
+<span id="cb8-33"><a href="#cb8-33"></a></span>
+<span id="cb8-34"><a href="#cb8-34"></a><span class="co"># Convert the prices to numeric format</span></span>
+<span id="cb8-35"><a href="#cb8-35"></a>product_cost <span class="ot">=</span> <span class="fu">as.numeric</span>(product_cost)</span>
+<span id="cb8-36"><a href="#cb8-36"></a></span>
+<span id="cb8-37"><a href="#cb8-37"></a><span class="co"># Create a tibble (data frame) combining the product names and prices</span></span>
+<span id="cb8-38"><a href="#cb8-38"></a>product <span class="ot">=</span> <span class="fu">data.frame</span>(product_name, product_cost)</span>
+<span id="cb8-39"><a href="#cb8-39"></a>product <span class="ot">=</span> <span class="fu">tibble</span>(product_name, product_cost)</span>
+<span id="cb8-40"><a href="#cb8-40"></a></span>
+<span id="cb8-41"><a href="#cb8-41"></a><span class="co"># Output the product&nbsp;tibble</span></span>
+<span id="cb8-42"><a href="#cb8-42"></a>product</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
 
-<div class="callout-note callout callout-style-default callout-captioned">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-caption-container flex-fill">
-Note
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["product_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["product_cost"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"XLITE 04 Ultegra","2":"3299.00"},{"1":"XLITE 06 Ultegra","2":"3999.00"},{"1":"BACKROAD GRX RX810 1x11","2":"2999.00"},{"1":"COUNT SOLO 2","2":"849.00"},{"1":"THE BRUCE 2","2":"1199.00"},{"1":"BACKROAD AL GRX RX400","2":"1999.00"},{"1":"SNEAK PLUS","2":"2399.00"},{"1":"ROOT MILLER 1","2":"2299.00"},{"1":"PRO SL DISC 105","2":"1699.00"},{"1":"BACKROAD Force eTap AXS XPLR 1x12 Limited","2":"4899.00"},{"1":"THRILL HILL 3","2":"3999.00"},{"1":"BACKROAD AL GRX RX600 1X11","2":"2349.00"},{"1":"MAYOR PLUS 3 Unisex","2":"4999.00"},{"1":"BACKROAD AXS MULLET BUILD","2":"3999.00"},{"1":"SmartPhone DryBag 4-5\" Fahrradtasche","2":"9.95"},{"1":"DISTANCE MENS JERSEY Rennradtrikot","2":"129.95"},{"1":"DL 1 Deckenlifter","2":"14.95"},{"1":"MTB ENDURO 3.0 PANTS MTB Bikepants","2":"99.95"},{"1":"Bucket Kit Reinigungsset","2":"78.95"},{"1":"Direttissima Scheibenbremse Set VR+HR","2":"1079.00"},{"1":"MTB GRAVITY 3.0 JERSEY Langarm MTB Bikeshirt","2":"55.95"},{"1":"Rücksicht Vario einklappbarer Fahrradspiegel, getönt","2":"12.95"},{"1":"SCORPIONE 3 JERSEY Radtrikot","2":"69.95"},{"1":"Charly Klingel für LenkeraußenØ 22,2 mm","2":"2.50"},{"1":"KORTAL RACE MIPS MTB Fahhradhelm","2":"249.95"},{"1":"Spokey Nippelspanner - Werkstattausführung -","2":"4.95"},{"1":"ERGO 5 Fahrradschuhe","2":"224.95"},{"1":"airjumper Standpumpe","2":"21.95"},{"1":"Rastplatz FB 2 Fahrradständer","2":"29.95"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
 </div>
-<div class="callout-body-container callout-body">
-<p>You can delete everything in here and start fresh.</p>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">head</span>(product,<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["product_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["product_cost"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"XLITE 04 Ultegra","2":"3299"},{"1":"XLITE 06 Ultegra","2":"3999"},{"1":"BACKROAD GRX RX810 1x11","2":"2999"},{"1":"COUNT SOLO 2","2":"849"},{"1":"THE BRUCE 2","2":"1199"},{"1":"BACKROAD AL GRX RX400","2":"1999"},{"1":"SNEAK PLUS","2":"2399"},{"1":"ROOT MILLER 1","2":"2299"},{"1":"PRO SL DISC 105","2":"1699"},{"1":"BACKROAD Force eTap AXS XPLR 1x12 Limited","2":"4899"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 </div>
 </div>
 
 
-
-</main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -318,9 +445,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -385,6 +526,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
