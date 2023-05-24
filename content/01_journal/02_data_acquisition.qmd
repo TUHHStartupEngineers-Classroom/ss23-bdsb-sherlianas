@@ -1,8 +1,76 @@
 ---
 title: "Data Acquisition"
-author: "Joschka Schwarz"
+author: "Sherliana Setiawan"
+matriculation number: "534820" 
+
 ---
 
-::: callout-note
-You can delete everything in here and start fresh.
-:::
+# DATA ACQUISITION 
+----------------------------------------------------------------------------
+# CHALLENGE 1: API
+
+```{r}
+# load libraries 
+library(tidyverse)
+install.packages("devtools", repos = "http://cran.rstudio.com/")
+devtools::install_github("zumbov2/deeplr")
+
+
+my_auth_key = "05bc2a53-360f-1d6a-540f-2b880ad44d62:fx"
+text_to_be_translated = "La seule facon de savoir ce qui se passe est de perturber le systeme."
+
+translated_text <- deeplr::translate2(
+  text = text_to_be_translated,
+  target_lang = "EN",
+  auth_key = my_auth_key
+)
+knitr::kable(text_to_be_translated, caption = 'text to be translated')
+knitr::kable(translated_text, caption = 'translated.text')
+```
+-------------------------------------------------------------------------------
+# CHALLENGE 2: WEB SCRAPPING ROSEBIKES.DE
+```{r}
+# Load libraries
+library(rvest)    # For web scraping
+library(stringr)  # For string manipulation
+library(dplyr)    # For data manipulation
+
+# Read the HTML content of the webpage
+url = "https://www.rosebikes.de/"
+rosebikes = read_html(url)
+
+# Extract product names from the HTML using CSS selector (selector gadget) ".products-slider-tile__product-name"
+product_name = rosebikes %>%
+  html_nodes(".products-slider-tile__product-name") %>%
+  html_text()
+
+# Extract product costs from the HTML using CSS selector ".product-tile-price__current-value",
+# remove non-numeric characters, such as currency symbols and spaces
+product_cost = rosebikes %>%
+  html_nodes(".product-tile-price__current-value ") %>%
+  html_text() %>%
+  str_replace_all("[^0-9.,]+", "")
+
+# Remove any remaining non-numeric characters, such as additional symbols or text
+product_cost = sub("[^0-9.,]", "", product_cost)
+
+# Replace commas with dots to convert the prices into a numeric format
+product_cost = sub(",", ".", product_cost)
+
+# Remove the first dot if it represents a thousand separator
+product_cost = sub("(?<=\\d)\\.(?=\\d{3})", "", product_cost, perl = TRUE)
+
+# Remove trailing ".00" from the prices
+product_cost = sub("\\.00$", "", product_cost)
+
+# Convert the prices to numeric format
+product_cost = as.numeric(product_cost)
+
+# Create a tibble (data frame) combining the product names and prices
+product = data.frame(product_name, product_cost)
+product = tibble(product_name, product_cost)
+
+# Output the product tibble
+product
+head(product,10)
+```
