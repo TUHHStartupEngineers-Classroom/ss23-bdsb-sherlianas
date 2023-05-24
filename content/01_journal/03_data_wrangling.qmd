@@ -1,8 +1,175 @@
 ---
 title: "Data Wrangling"
-author: "Joschka Schwarz"
+author: "Sherliana Setiawan"
+matriculation number: "534820" 
+
 ---
 
-::: callout-note
-You can delete everything in here and start fresh.
-:::
+```{r}
+# LOAD LIBRARIES
+install.packages("devtools", repos = "http://cran.rstudio.com")
+library(vroom)
+library(tictoc)
+library(tidyverse)
+library(data.table)
+
+# SPECIFY COLUMNS TYPES
+col_types <- list(
+  id = col_character(),
+  type = col_character(),
+  number = col_character(),
+  country = col_character(),
+  date = col_date("%Y-%m-%d"),
+  abstract = col_character(),
+  title = col_character(),
+  kind = col_character(),
+  num_claims = col_double(),
+  filename = col_character(),
+  withdrawn = col_double()
+)
+
+# IMPORT DATA
+patent_tbl <- vroom(
+  file       = "C:/Users/USER/OneDrive/Pictures/Documents/GitHub/ss23-bdsb-sherlianas/content/data/Patent_data_reduced/patent.tsv", 
+  delim      = "\t", 
+  col_types  = col_types,
+  na         = c("", "NA", "NULL")
+)
+
+patent_assignee_tbl <- vroom(
+  file       = "C:/Users/USER/OneDrive/Pictures/Documents/GitHub/ss23-bdsb-sherlianas/content/data/Patent_data_reduced/patent_assignee.tsv", 
+  delim      = "\t", 
+  col_types  = col_types,
+  na         = c("", "NA", "NULL")
+)
+
+assignee_tbl <- vroom(
+  file       = "C:/Users/USER/OneDrive/Pictures/Documents/GitHub/ss23-bdsb-sherlianas/content/data/Patent_data_reduced/assignee.tsv", 
+  delim      = "\t", 
+  col_types  = col_types,
+  na         = c("", "NA", "NULL")
+)
+
+uspc_tbl <- vroom(
+  file       = "C:/Users/USER/OneDrive/Pictures/Documents/GitHub/ss23-bdsb-sherlianas/content/data/Patent_data_reduced/uspc.tsv", 
+  delim      = "\t", 
+  col_types  = col_types,
+  na         = c("", "NA", "NULL")
+)
+# CONVERT DATA TO DATA.TABLE
+class(assignee_tbl)
+setDT(assignee_tbl)
+class(patent_assignee_tbl)
+setDT(patent_assignee_tbl)
+class(patent_tbl)
+setDT(patent_tbl)
+
+
+## Question 1: Patent Dominance 
+## What US Corporation has the most patent? List the 10 US corporation with the most assigned patents.
+
+### join data
+tic()
+Q1_patent_data_combined <- merge(x = patent_assignee_tbl, y = assignee_tbl, 
+                       by.x="assignee_id", by.y ="id",
+                       all.x = TRUE, 
+                       all.y = FALSE)
+toc()
+
+setkey(Q1_patent_data_combined, "assignee_id")
+key(Q1_patent_data_combined)
+Q1_patent_data_combined %>% dim()
+keep_cols <- c("assignee_id","patent_id","organization")
+Q1_patent_data_combined <- Q1_patent_data_combined[, ..keep_cols]
+Q1_patent_data_combined %>% dim()
+Q1_patent_data_combined %>% glimpse()
+
+tic()
+Count_Q1<- Q1_patent_data_combined %>%
+  filter(!is.na(organization)) %>%
+  count(organization)%>% arrange(desc(n))
+toc()
+
+
+head(Count_Q1,10)
+```
+## Answer for Question 1 --> International Business Machines Corporation has the most assigned patent with 7547 patents. 
+## Top 10 is listed in the table 
+
+-----------------------------------------------------------------------------------------------
+## Question 2: Recent Patent Activity 
+## What US Corporation had the most patents granted in August 2014? List the 10 companies with the new granted patents for August 2014
+
+```{r}
+class(patent_tbl)
+setDT(patent_tbl)
+
+tic()
+Q2_patent_data_combined <- merge(x = patent_tbl, y = Q1_patent_data_combined, 
+                        by.x="id", by.y ="patent_id",
+                        all.x = TRUE, 
+                        all.y = FALSE)
+toc()
+
+## Time frame --> 2014-08-01 - 2014-08-31 
+
+Q2_Aug2014_patent_data_combined<- with(Q2_patent_data_combined, Q2_patent_data_combined[(date >= "2014-08-01" & date <= "2014-08-31") ])
+
+tic()
+Q2_top_Aug2014 <- Q2_Aug2014_patent_data_combined %>%
+  filter(!is.na(organization)) %>%
+  count(organization)%>% arrange(desc(n))
+toc()
+
+#TOP US company with most patents in Aug 2014 
+head(Q2_top_Aug2014,1)
+
+#Top 10 companies with most new granted patents in Aug 2014
+head(Q2_top_Aug2014,10)
+
+## Answer for Question 2
+## 2.1. TOP US company with most patents in Aug 2014 --> International Business Machines Corporation with 718 granted patents in AUgust 2014
+## Top 10 companies is listed in the table 
+
+```
+-------------------------------------------------------------------------------------------
+## Question 3: Innovation in Tech
+## What is the most innovative tech sector? For the top 10 companies worldwide with the most patents, what are the top 5 USPTO tech main classes? 
+
+```{r}
+### join data
+tic()
+Q3_patent_all <- merge(x = uspc_tbl, y = Q1_patent_data_combined, 
+                       by.x="patent_id", by.y ="patent_id",
+                       all.x = TRUE, 
+                       all.y = FALSE)
+toc()
+
+#Most innovative class can be calculated by summing the total number of patents for each class
+tic()
+mostinnovative_class_Q3<- Q3_patent_all %>%
+  filter(!is.na(mainclass_id)) %>%
+  count(mainclass_id)%>% arrange(desc(n))
+toc()
+
+#making a data frame of TOP 10 companies to investigate the top 5 USPTO
+Q3_top10 <- Q3_patent_all[Q3_patent_all$organization %in% c('International Business Machines Corporation','Samsung Electronics Co., Ltd.','Canon Kabushiki Kaisha','Sony Corporation','Microsoft Corporation','Google Inc.','Kabushiki Kaisha Toshiba','QUALCOMM Incorporated','LG Electronics Inc.','Panasonic Corporation'),]
+
+Q3_top10$Company_Class <- paste(Q3_top10$organization, Q3_top10$mainclass_id)
+
+# calculate the company class
+tic()
+Q3_top10_CC<- Q3_top10 %>%
+  count(Company_Class)%>% arrange(desc(n))
+toc()
+
+#displaying the most innovative class and its corresponding number of patents of that class
+head(mostinnovative_class_Q3,1)
+
+#Shows the top 5 USPTO Classes from the top 10 companies granted patents
+head(Q3_top10_CC,5)
+
+#Answer for Question 3:
+## Most innovative class --> main class id 257 
+#TOP 5 USPTO Classes from top 10 companies: listed in the table
+```

@@ -1,98 +1,103 @@
 ---
 title: "Tidyverse"
-author: "Joschka Schwarz"
+author: "Sherliana Setiawan"
+matriculation number: "534820" 
+
 ---
-
-::: callout-note
-You can delete everything in here and start fresh.
-:::
-
-This is a `.qmd` file. It is plain text with special features. Any time you write just like this, it will be compiled to normal text in the website. If you put a \# in front of your text, it will create a top level-header.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
-
-# Text Formatting
-
-*italics* and **bold**
-
-superscript^2^ / subscript~2~
-
-~~strikethrough~~
-
-`verbatim code`
-
-> Blockquote
-
-# Headings
-
-## Header 2
-### Header 3
-#### Header 4
-##### Header 5
-###### Header 6
-
-# Links & Images
-
-<https://quarto.org>
-
-[Quarto](https://quarto.org)
-
-![Caption](../../assets/img/elephant.png)
-
-[![Caption](../../assets/img/elephant.png)](https://quarto.org)
-
-[![Caption](../../assets/img/elephant.png)](https://quarto.org "An elephant")
-
-
-# Lists
-
-* unordered list
-    + sub-item 1
-    + sub-item 2
-        - sub-sub-item 1
-        
-*   item 2
-
-    Continued (indent 4 spaces)
-    
-    
-1. ordered list
-2. item 2
-    i) sub-item 1
-         A.  sub-sub-item 1
-         
-(@)  A list whose numbering
-
-continues after
-
-(@)  an interruption
-
-# Tables
-
-| Right | Left | Default | Center |
-|------:|:-----|---------|:------:|
-|   12  |  12  |    12   |    12  |
-|  123  |  123 |   123   |   123  |
-|    1  |    1 |     1   |     1  |
-
-# Source Code
-
-Use ``` to delimit blocks of source code:
-
-```
-code
-```
-
-Add a language to syntax highlight code blocks:
-
 ```{r}
-1 + 1
+# SALES ANALYSIS ----
+
+# 1.0 Load libraries ----
+install.packages("devtools", repos = "http://cran.rstudio.com")
+library(tidyverse)
+
+# 2.0 Importing Files ----
+bikes_tbl      <- readxl::read_excel(path="C:/Users/USER/OneDrive/Pictures/Documents/GitHub/ss23-bdsb-sherlianas/content/data/ds_data/01_bike_sales/01_raw_data/bikes.xlsx")
+
+
+orderlines_tbl <- readxl::read_excel(path = "C:/Users/USER/OneDrive/Pictures/Documents/GitHub/ss23-bdsb-sherlianas/content/data/ds_data/01_bike_sales/01_raw_data/orderlines.xlsx")
+
+bikeshops_tbl  <- readxl::read_excel(path = "C:/Users/USER/OneDrive/Pictures/Documents/GitHub/ss23-bdsb-sherlianas/content/data/ds_data/01_bike_sales/01_raw_data/bikeshops.xlsx")
+
+# 3.0 Examining Data ----
+orderlines_tbl
+glimpse(orderlines_tbl)
+
+
+# 4.0 Joining Data ----
+dplyr::left_join(orderlines_tbl, bikes_tbl, by = c("product.id" = "bike.id"))
+bike_orderlines_joined_tbl <- orderlines_tbl %>%
+  dplyr::left_join(bikes_tbl, by = c("product.id" = "bike.id")) %>%
+  dplyr::left_join(bikeshops_tbl, by = c("customer.id" = "bikeshop.id"))
+
+bike_orderlines_joined_tbl %>% glimpse()
+
+
+# 5.0 Wrangling Data ----
+bike_orderlines_joined_tbl %>% 
+  select(category) %>%
+  filter(str_detect(category, "^Mountain")) %>% 
+  unique()
+bike_orderlines_wrangled_tbl <- bike_orderlines_joined_tbl %>%
+  
+  separate(col    = category,
+           into   = c("category.1", "category.2", "category.3"),
+           sep    = " - ") %>%
+  
+  mutate(total.price = price * quantity) %>%
+  
+  select(-...1, -gender) %>%
+  
+  select(-ends_with(".id")) %>%
+  
+  bind_cols(bike_orderlines_joined_tbl %>% select(order.id)) %>% 
+  
+  select(order.id, contains("order"), contains("model"), contains("category"),
+         price, quantity, total.price,
+         everything()) %>%
+  
+  rename(bikeshop = name) %>%
+  set_names(names(.) %>% str_replace_all("\\.", "_"))
+
+
+# 6.0 Splitting location into city and state   ----
+bike_orderlines_wrangled_tbl <- bike_orderlines_wrangled_tbl %>%
+  separate(col= "location", into = c("city", "state"), sep = ",")
+
+# 7.0 Highest revenue  ----
+revenue_by_state <- bike_orderlines_wrangled_tbl %>% 
+  group_by(state) %>% 
+  summarize(total_revenue = sum(total_price))
+
+# 7.1 Bar plot revenue by state  ----
+# aes --> aestethic; geom_bar(stat="identity") --> R will calculate the sum of y variable, grouped by the x variable and use ar to display the sum.
+# geom_bar() --> makes the height of the bar proportional to the number of cases in each group
+# xlab & ylab --> the text for axis label; ggtitle() --> to add overall plot title
+# theme(axis.text.x = element_text(angle=45, hjust=1)) --> to rotate yout x-axis laels
+ggplot(revenue_by_state, aes(x=state, y=total_revenue)) + 
+  geom_bar(stat="identity") + 
+  xlab("state") +
+  ylab("total revenue") + 
+  ggtitle("total revenue by state")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# 7.2 State with the highest revenue ----
+revenue_by_state %>% 
+  filter(total_revenue == max(total_revenue))
+ 
+#8.0 Writing files ----
+#8.1 Excel ----
+install.packages("devtools", repos = "http://cran.rstudio.com")
+library("writexl")
+bike_orderlines_wrangled_tbl %>% 
+  write_xlsx("C:/Users/USER/OneDrive/Pictures/Documents/GitHub/ss23-bdsb-sherlianas/content/bike_orderlines_by_state.xlsx")
+
+# 7.2 CSV ----
+bike_orderlines_wrangled_tbl%>%
+  write_csv("C:/Users/USER/OneDrive/Pictures/Documents/GitHub/ss23-bdsb-sherlianas/content/bike_orderlines_by_state.csv")
+
+# 7.3 RDS ----
+bike_orderlines_wrangled_tbl%>% 
+  write_rds("C:/Users/USER/OneDrive/Pictures/Documents/GitHub/ss23-bdsb-sherlianas/content/bike_orderlines_by_state.rds")
 ```
 
-```{r}
-cars
-```
-
-```{r}
-plot(cars)
-```
